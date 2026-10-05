@@ -1,0 +1,366 @@
+{
+  "info": {
+    "_postman_id": "35ac9bce-b376-4ce4-bce5-347edb4473df",
+    "name": "API - RAIZES DO NORDESTE",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "47887529",
+    "_collection_link": "https://go.postman.co/collection/47887529-35ac9bce-b376-4ce4-bce5-347edb4473df?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "AUTH",
+      "item": [
+        {
+          "name": "Cadastrar Usuário",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"String\",\r\n  \"senha\": \"123\",\r\n  \"perfil\": \"CLIENTE\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/cadastrar",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "cadastrar"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login Válido",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set(\"jwt_token\", pm.response.json().access_token);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "username",
+                  "value": "user@teste.com"
+                },
+                {
+                  "key": "password",
+                  "value": "123"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/login",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login Inválido",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "username",
+                  "value": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "string"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/login",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "PEDIDOS",
+      "item": [
+        {
+          "name": "Criar Pedido",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"canalPedido\": \"APP\",\r\n  \"itens\": [\r\n    {\r\n      \"produto_id\": 1,\r\n      \"quantidade\": 1\r\n    }\r\n  ],\r\n  \"unidade_id\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/pedidos",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "pedidos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Listar Pedidos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/pedidos/?canalPedido=APP",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "pedidos",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "canalPedido",
+                  "value": "APP"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Pagar Pedido Mock",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/pedidos/pagar?pedido_id=6",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "pedidos",
+                "pagar"
+              ],
+              "query": [
+                {
+                  "key": "pedido_id",
+                  "value": "6"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Erros e Validações",
+      "item": [
+        {
+          "name": "Listar Pedidos Sem Token",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/pedidos/?canalPedido=WEB",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "pedidos",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "canalPedido",
+                  "value": "WEB"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Pedido Sem Estoque",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"canalPedido\": \"TOTEM\",\r\n  \"itens\": [\r\n    {\r\n      \"produto_id\": 1,\r\n      \"quantidade\": 43\r\n    }\r\n  ],\r\n  \"unidade_id\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/pedidos",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "pedidos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Pedido Produto Inexistente",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"canalPedido\": \"TOTEM\",\r\n  \"itens\": [\r\n    {\r\n      \"produto_id\": 9999,\r\n      \"quantidade\": 1\r\n    }\r\n  ],\r\n  \"unidade_id\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/pedidos",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "pedidos"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Pagar Pedido Já Pago",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://127.0.0.1:8000/pedidos/pagar?pedido_id=1",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "pedidos",
+                "pagar"
+              ],
+              "query": [
+                {
+                  "key": "pedido_id",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{jwt_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "jwt_token",
+      "value": ""
+    }
+  ]
+}
