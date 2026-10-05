@@ -63,24 +63,19 @@ class PedidoService:
         return pedido_salvo
 
     def processar_pagamento(self, pedido_id: int):
-        # 1. Busca o pedido no banco
         pedido = self.repo.buscar_por_id(pedido_id)
         if not pedido:
             raise HTTPException(status_code=404, detail="Pedido não encontrado.")
 
-        # 2. Regra de Negócio: Só paga se estiver aguardando
         if pedido.status != StatusPedido.AGUARDANDO_PAGAMENTO:
             raise HTTPException(status_code=400, detail="Este pedido não está aguardando pagamento.")
 
-        # 3. Chama o Gateway de Pagamento (Mock)
         gateway = PagamentoMockAdapter()
         resposta_pagamento = gateway.processar_pagamento(pedido_id=pedido.id)
 
-        # 4. Atualiza o status e PROCESSA FIDELIDADE
         if resposta_pagamento["sucesso"]:
             self.repo.atualizar_status(pedido, StatusPedido.COZINHA)
 
-            # --- LÓGICA DE FIDELIDADE (1 ponto por cada Real gasto) ---
             if pedido.cliente_id:
                 usuario = self.usuario_repo.buscar_por_id(pedido.cliente_id)
                 if usuario:
@@ -92,7 +87,6 @@ class PedidoService:
         else:
             self.repo.atualizar_status(pedido, StatusPedido.CANCELADO)
 
-        # 5. Retorna um resumo para a API
         return {
             "pedido_id": pedido.id,
             "status_atual": pedido.status,
@@ -107,14 +101,11 @@ class UsuarioService:
         self.repo = UsuarioRepository(db)
 
     def cadastrar_usuario(self, user_in: UsuarioCreate):
-        # 1. Verifica se o e-mail já existe (Regra de negócio)
         if self.repo.buscar_por_email(user_in.email):
             raise HTTPException(status_code=400, detail="E-mail já cadastrado.")
 
-        # 2. Criptografa a senha (Requisito de LGPD/Segurança)
         senha_criptografada = obter_hash_senha(user_in.senha)
 
-        # 3. Salva no banco
         novo_usuario = UsuarioModel(
             email=user_in.email,
             senha_hash=senha_criptografada,
