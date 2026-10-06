@@ -14,7 +14,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 3
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="usuarios/login")
 
 def verificar_senha(senha_pura, senha_hash):
     return pwd_context.verify(senha_pura, senha_hash)
@@ -50,7 +50,8 @@ def obter_usuario_atual(token: str = Depends(oauth2_scheme)):
 
 def requer_perfil(perfis_permitidos: list):
     def verificador_perfil(usuario: dict = Depends(obter_usuario_atual)):
-        if usuario.get("perfil") not in perfis_permitidos:
+        perfis_str = [p.value if hasattr(p, 'value') else p for p in perfis_permitidos]
+        if usuario.get("perfil") not in perfis_str:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Operação não permitida para o seu perfil"

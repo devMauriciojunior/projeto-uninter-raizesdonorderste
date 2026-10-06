@@ -37,7 +37,8 @@ def realizar_pagamento_mock(
 @router.get("/", response_model=List[PedidoResponse])
 def listar_pedidos(
         canalPedido: Optional[CanalPedido] = None,
-        db: Session = Depends(get_db)
+        db: Session = Depends(get_db),
+        usuario_atual: dict = Depends(requer_perfil([PerfilUsuario.ADMIN, PerfilUsuario.ATENDENTE, PerfilUsuario.CLIENTE]))
 ):
     service = PedidoService(db)
     pedidos_banco = service.listar_pedidos(canal_filtro=canalPedido)

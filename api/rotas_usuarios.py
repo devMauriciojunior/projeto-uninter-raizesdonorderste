@@ -8,7 +8,7 @@ from infrastructure.security import criar_token_acesso, verificar_senha
 from infrastructure.repositories import UsuarioRepository
 from application.services import UsuarioService
 
-router = APIRouter(tags=["Usuários e Autenticação"])
+router = APIRouter(prefix="/usuarios", tags=["Usuários e Autenticação"])
 
 @router.post("/cadastrar", response_model=UsuarioResponse, status_code=status.HTTP_201_CREATED)
 def cadastrar_usuario(
