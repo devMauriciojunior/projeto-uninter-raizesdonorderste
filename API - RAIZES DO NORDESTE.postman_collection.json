@@ -25,7 +25,7 @@
               }
             },
             "url": {
-              "raw": "http://127.0.0.1:8000/cadastrar",
+              "raw": "http://127.0.0.1:8000/usuarios/cadastrar",
               "protocol": "http",
               "host": [
                 "127",
@@ -71,7 +71,7 @@
               ]
             },
             "url": {
-              "raw": "http://127.0.0.1:8000/login",
+              "raw": "http://127.0.0.1:8000/usuarios/login",
               "protocol": "http",
               "host": [
                 "127",
@@ -106,7 +106,7 @@
               ]
             },
             "url": {
-              "raw": "http://127.0.0.1:8000/login",
+              "raw": "http://127.0.0.1:8000/usuarios/login",
               "protocol": "http",
               "host": [
                 "127",
