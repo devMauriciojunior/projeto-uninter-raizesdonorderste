@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 from typing import List, Optional
+
 from domain.enums import CanalPedido, StatusPedido, PerfilUsuario
 
 class ItemPedidoCreate(BaseModel):

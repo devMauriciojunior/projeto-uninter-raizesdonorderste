@@ -10,6 +10,7 @@ from application.services import UsuarioService
 
 router = APIRouter(prefix="/usuarios", tags=["Usuários e Autenticação"])
 
+# Rota para cadastrar novos usuarios
 @router.post("/cadastrar", response_model=UsuarioResponse, status_code=status.HTTP_201_CREATED)
 def cadastrar_usuario(
         usuario: UsuarioCreate,
@@ -18,6 +19,7 @@ def cadastrar_usuario(
     service = UsuarioService(db)
     return service.cadastrar_usuario(usuario)
 
+# Rota para realizar login na aplicação
 @router.post("/login")
 def login(
         form_data: OAuth2PasswordRequestForm = Depends(),

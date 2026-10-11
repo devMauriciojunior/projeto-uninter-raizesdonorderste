@@ -1,10 +1,13 @@
 # uvicorn main:app --reload
 # pip freeze > requirements.txt
+# python -m scripts_aux.seed
+# python -m scripts_aux.consultar_banco
 
 from fastapi import FastAPI
 from infrastructure.database import engine, Base
 from api import rotas_pedidos, rotas_usuarios
 
+# Cria o arquivo de banco de dados
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(

@@ -1,6 +1,7 @@
 from sqlalchemy import String, Column, Integer, Float, DateTime, Boolean, ForeignKey, Enum as SQLEnum
 from sqlalchemy.orm import relationship
 from datetime import datetime
+
 from infrastructure.database import Base
 from domain.enums import CanalPedido, StatusPedido, PerfilUsuario
 

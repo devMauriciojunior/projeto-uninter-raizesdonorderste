@@ -1,5 +1,6 @@
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
+
 from domain.schemas import PedidoCreate, UsuarioCreate
 from domain.enums import StatusPedido
 from infrastructure.models import PedidoModel, UsuarioModel, ItemPedidoModel
@@ -7,6 +8,7 @@ from infrastructure.repositories import PedidoRepository, UsuarioRepository, Pro
 from infrastructure.security import obter_hash_senha
 from infrastructure.gateway_pagamento import PagamentoMockAdapter
 
+# Class com as regras de negocio de Pedido
 class PedidoService:
     def __init__(self, db: Session):
         self.db = db
@@ -19,8 +21,7 @@ class PedidoService:
 
         usuario = self.usuario_repo.buscar_por_email(usuario_email)
         if not usuario:
-            raise HTTPException(status_code=401,
-                                detail="Usuário não encontrado no banco de dados. Faça login novamente.")
+            raise HTTPException(status_code=401, detail="Usuário não encontrado no banco de dados. Faça login novamente.")
 
         valor_total = 0.0
         itens_model = []
@@ -83,7 +84,6 @@ class PedidoService:
                     usuario.pontos_fidelidade += pontos_ganhos
                     self.usuario_repo.atualizar(usuario)
                     resposta_pagamento["fidelidade"] = f"Você ganhou {pontos_ganhos} pontos!"
-            # -----------------------------------------------------------
         else:
             self.repo.atualizar_status(pedido, StatusPedido.CANCELADO)
 
@@ -96,6 +96,7 @@ class PedidoService:
     def listar_pedidos(self, canal_filtro=None):
         return self.repo.listar_pedidos(canal_filtro=canal_filtro)
 
+# Class com as regras de negocio do Usuario
 class UsuarioService:
     def __init__(self, db: Session):
         self.repo = UsuarioRepository(db)
